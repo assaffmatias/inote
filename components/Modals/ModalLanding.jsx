@@ -1,7 +1,10 @@
 import { View, Modal, TouchableWithoutFeedback, StyleSheet, Text, Pressable, TextInput } from "react-native"
-import { NewFolderIcon } from "../Icons";
 
 export function ModalLanding({ setModalVisible, modalVisible, folderName, setFolderName, createFolder }) {
+    const handleCancel = () => {
+        setFolderName('')
+        setModalVisible(false)
+    }
 
     return (
         <View>
@@ -15,9 +18,10 @@ export function ModalLanding({ setModalVisible, modalVisible, folderName, setFol
                 <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <NewFolderIcon />
+                            <Text className="font-medium text-xl m-0" >New Folder</Text>
+                            <Text className="m-0 mb-4" >Enter a new name for the folder</Text>
                             <TextInput
-                                className="font-medium text-2xl flex-1"
+                                className="text-lg border-[1px] border-solid border-[#9c9c9e54] rounded-lg p-2 w-[90%]"
                                 placeholderTextColor="#9c9c9e"
                                 placeholder="Folder name"
                                 color="#454545"
@@ -25,9 +29,15 @@ export function ModalLanding({ setModalVisible, modalVisible, folderName, setFol
                                 value={folderName}
                                 onChangeText={text => setFolderName(text)}
                             />
-                            <Pressable>
-                                <Text className="text-lg text-[#e0a103] font-medium">Done</Text>
-                            </Pressable>
+                            <View className="flex-row mt-6 w-full border-t border-solid border-[#9c9c9e54]" >
+                                <Pressable onPress={handleCancel} className="flex-1 justify-center items-center py-3">
+                                    <Text className="text-lg text-[#e0a103] font-medium">Cancel</Text>
+                                </Pressable>
+                                <Pressable onPress={() => createFolder(folderName)} className="border-l border-solid border-[#9c9c9e54] flex-1 justify-center items-center py-3">
+                                    <Text className="text-lg text-[#e0a103] font-medium">Save</Text>
+                                </Pressable>
+                            </View>
+
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
@@ -46,24 +56,11 @@ const styles = StyleSheet.create({
     },
 
     modalView: {
-        flexDirection: 'row',
         alignItems: 'center',
-        gap: 12,
         backgroundColor: 'white',
-        width: '90%',
+        width: '80%',
         shadowColor: '#000',
-        padding: 30,
+        paddingTop: 20,
         borderRadius: 8,
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
     },
 });

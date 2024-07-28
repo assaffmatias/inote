@@ -1,14 +1,12 @@
 import { View, Modal, TouchableWithoutFeedback, StyleSheet, Text, Pressable } from "react-native"
 import { PinIcon } from "../Icons";
 import { DeleteIcon } from "../Icons";
-import { EraseIcon } from "../Icons";
-import { CloseCircleIcon } from "../Icons";
 import { PinOffIcon } from "../Icons";
+import { EraseIcon } from "../Icons";
 
-export function ModalEdit({ setModalVisible, modalVisible, deleteNote, id, clearNote, togglePinned, pinned }) {
+export function ModalEdit({ setModalVisible, modalVisible, deleteNote, id, togglePinned, pinned }) {
     const handleTogglePinned = () => {
         togglePinned(id);
-        setModalVisible(false);
     };
 
     return (
@@ -38,21 +36,6 @@ export function ModalEdit({ setModalVisible, modalVisible, deleteNote, id, clear
                                 <Text className="text-lg text-[#454545]">Delete</Text>
                                 <DeleteIcon />
                             </Pressable>
-                            <Pressable
-                                className="p-4 flex-row w-[100%] justify-between items-center border-b-[1px] border-solid border-[#ada7a169]"
-                                onPress={clearNote}
-                            >
-                                <Text className="text-lg text-[#454545]">Clear Note</Text>
-                                <EraseIcon />
-                            </Pressable>
-                            <Pressable
-                                className="p-4 flex-row w-[100%] justify-between items-center"
-                                onPress={() => setModalVisible(!modalVisible)}
-                            >
-                                <Text className="text-lg text-[#454545]">Close</Text>
-                                <CloseCircleIcon />
-                            </Pressable>
-
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
@@ -73,16 +56,5 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '100%',
         shadowColor: '#000',
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
     },
 });

@@ -10,7 +10,6 @@ export function AppProvider({ children }) {
 
   const storeData = async (id, title, text, date, pinned) => {
     try {
-      // const id = noteCounter;
       const newNote = { id, title, text, date, pinned };
       const existingNotes = await AsyncStorage.getItem('@notes');
       const currentNotes = existingNotes ? JSON.parse(existingNotes) : [];
@@ -18,10 +17,7 @@ export function AppProvider({ children }) {
 
       await AsyncStorage.setItem('@notes', JSON.stringify(updatedNotes));
 
-      alert('Saved Note')
       router.navigate('/home');
-      // setTitle('');
-      // setText('');
     } catch (error) {
       console.error(error);
     }
@@ -32,19 +28,15 @@ export function AppProvider({ children }) {
       const value = await AsyncStorage.getItem('@notes');
       let notes = JSON.parse(value);
   
-      // Encuentra la nota que se va a editar
       const foundIndex = notes.findIndex(note => note.id === id);
   
       if (foundIndex !== -1) {
-        // Actualiza los campos de la nota encontrada
         notes[foundIndex].title = title;
         notes[foundIndex].text = text;
         notes[foundIndex].pinned = pinned;
   
-        // Guarda el array de notas actualizado en AsyncStorage
         await AsyncStorage.setItem('@notes', JSON.stringify(notes));
         
-        alert('Note updated successfully');
         router.navigate('/home');
       } else {
         console.log('Note with ID', id, 'not found.');

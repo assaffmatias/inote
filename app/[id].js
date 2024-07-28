@@ -1,12 +1,15 @@
-import { View, TextInput, Alert, Button } from 'react-native';
-import { Screen } from '../components/Screen';
-import { useLocalSearchParams } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// Dependencies
 import { useContext, useEffect, useState } from 'react';
-import AppContext from '../components/AppContext';
+import { View, TextInput, Alert } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Components
+import AppContext from '../components/Providers/AppContext';
+import { Screen } from '../components/Providers/Screen';
 import { HeaderEdit } from '../components/Headers/HeaderEdit';
 import { ModalEdit } from '../components/Modals/ModalEdit';
-import { useRouter } from 'expo-router';
 
 export default function Edit() {
     const { id } = useLocalSearchParams();
@@ -65,19 +68,18 @@ export default function Edit() {
 
     const deleteNote = async (id) => {
         try {
-            Alert.alert('Delete Note', 'This note will be completely removed', [
+            Alert.alert('Delete Note?', 'You will not be able to undo the changes', [
                 {
                     text: 'Cancel',
                     style: 'cancel',
                 },
                 {
-                    text: 'OK',
+                    text: 'Continue',
                     onPress: async () => {
                         const value = await AsyncStorage.getItem('@notes');
                         const notes = JSON.parse(value);
                         const updatedNotes = notes.filter(note => note.id !== id);
                         await AsyncStorage.setItem('@notes', JSON.stringify(updatedNotes));
-                        alert('Note Deleted');
                         setModalVisible(false);
                         router.navigate('/home');
                     }
@@ -86,24 +88,6 @@ export default function Edit() {
         } catch (error) {
             console.error(error);
         }
-    };
-
-    const clearNote = () => {
-        Alert.alert('Clear Note', 'All content of this note will be deleted', [
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
-            {
-                text: 'OK',
-                onPress: async () => {
-                    setTitle('');
-                    setText('');
-                    alert('Cleaned Note');
-                    setModalVisible(false);
-                }
-            },
-        ]);
     };
 
     const togglePinned = async (id) => {
@@ -118,8 +102,7 @@ export default function Edit() {
                 await AsyncStorage.setItem('@notes', JSON.stringify(notes));
 
                 setPinned(notes[foundIndex].pinned);
-                notes[foundIndex].pinned === true ? alert('Pinned') : alert('Unpinned');
-                console.log('Note pinned status updated successfully:', notes[foundIndex].pinned);
+                // notes[foundIndex].pinned === true ? alert('Pinned') : alert('Unpinned');
             } else {
                 console.log('Note with ID', id, 'not found.');
             }
@@ -127,11 +110,6 @@ export default function Edit() {
             console.error('Error updating note:', error);
         }
     };
-
-    console.log(`title: ${title}`);
-    console.log(`NewTitle: ${newTitle}`);
-    console.log(`OriginalTitle: ${originalTitle}`);
-
 
     return (
         <Screen>
@@ -152,7 +130,6 @@ export default function Edit() {
                 modalVisible={modalVisible}
                 deleteNote={deleteNote}
                 id={id}
-                clearNote={clearNote}
                 togglePinned={togglePinned}
                 pinned={pinned}
             />

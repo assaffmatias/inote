@@ -5,18 +5,14 @@ import { View, TextInput, ScrollView } from "react-native"
 import { format } from 'date-fns';
 
 // Components
-import AppContext from "../components/AppContext";
-import { Screen } from "../components/Screen"
+import AppContext from "../components/Providers/AppContext";
+import { Screen } from "../components/Providers/Screen"
 import { HeaderCreate } from "../components/Headers/HeaderCreate";
-import { CheckList } from "../components/CheckList";
-import { MenuInput } from '../components/Menus/MenuInput';
 
 export default function () {
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
     const { storeData } = useContext(AppContext)
-    const [checklists, setChecklists] = useState([]);
-    const [checkVisible, setCheckVisible] = useState(false)
     const [pinned, setPinned] = useState(false)
     
 
@@ -27,7 +23,6 @@ export default function () {
         storeData(id, title, text, date, pinned)
         setTitle('')
         setText('')
-        setChecklists([]);
     }
 
     return (
@@ -54,11 +49,8 @@ export default function () {
                         onChangeText={setText}
                         multiline
                     />
-                    {checkVisible && <CheckList checklists={checklists} setChecklists={setChecklists} />}
                 </View>
             </ScrollView>
-
-            {/* <MenuInput checkVisible={checkVisible} setCheckVisible={setCheckVisible} /> */}
         </Screen>
     )
 }

@@ -5,6 +5,7 @@ import { EllipsisIcon } from "../Icons"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export function HeaderEdit({ openModal, sendData, revertChanges, redoChanges, title, newTitle, originalTitle, text, newText, originalText }) {
+
     return (
         <View className="flex-row justify-between my-4 items-center" >
             <Link asChild href={'/home'} className="flex-row items-center" >
@@ -23,7 +24,7 @@ export function HeaderEdit({ openModal, sendData, revertChanges, redoChanges, ti
                         <MaterialCommunityIcons name="arrow-u-left-top" size={24} color="#9c9c9e" />
                     </Pressable>
                 )}
-                {newTitle === '' || newTitle === originalTitle || newText === '' || newText === originalText  ? (
+                {newTitle.length === 0 || newTitle === originalTitle || newText.length === 0 || newText === originalTitle ? (
                     <Pressable className="ml-4">
                         <MaterialCommunityIcons name="arrow-u-right-top" size={24} color="#9c9c9e" />
                     </Pressable>

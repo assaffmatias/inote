@@ -1,31 +1,40 @@
 {
   "expo": {
-    "name": "i-notes",
-    "slug": "i-notes",
+    "name": "iNote",
+    "slug": "inote",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "scheme": "",
+    "scheme": "inote",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/load.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.matias.assaff.inote"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "68aa7b98-baa8-4e93-838b-4ebe7b7b0392"
+      }
+    }
   }
 }

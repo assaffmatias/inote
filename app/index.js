@@ -8,7 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderLanding } from "../components/Headers/HeaderLanding";
 import { MenuLanding } from "../components/Menus/MenuLanding";
 import { ModalLanding } from "../components/Modals/ModalLanding";
-import { Screen } from "../components/Screen"
+import { Screen } from "../components/Providers/Screen"
+import { ModalFolder } from "../components/Modals/ModalFolder";
 
 //Icons
 import { FolderIcon } from "../components/Icons";
@@ -19,6 +20,7 @@ export default function Landing() {
     const [modalVisible, setModalVisible] = useState(false)
     const [folderName, setFolderName] = useState('');
     const [folders, setFolders] = useState([]);
+    const [modalMenu, setModalMenu] = useState(false)
 
     const getData = async () => {
         try {
@@ -61,15 +63,29 @@ export default function Landing() {
 
             const updatedFolders = [...folders, newFolder];
             await saveFolders(updatedFolders);
-
+            setModalVisible(false)
+            setFolderName('')
         } catch (error) {
             console.error('Error creating folder:', error);
         }
     };
 
+    const deleteAllFolders = async () => {
+        try {
+            // Elimina los datos de carpetas almacenados en AsyncStorage
+            await AsyncStorage.removeItem('@folders');
+            // Actualiza el estado para reflejar que no hay carpetas
+            setFolders([]);
+            setModalMenu(false)
+        } catch (error) {
+            console.error('Error deleting folders:', error);
+        }
+    };
+
     return (
         <Screen>
-            <HeaderLanding />
+            <HeaderLanding openMenu={setModalMenu}/>
+            <ModalFolder modalMenu={modalMenu} setModalMenu={setModalMenu} deleteAllFolders={deleteAllFolders}/>
             <ModalLanding setModalVisible={setModalVisible} modalVisible={modalVisible} folderName={folderName} setFolderName={setFolderName} createFolder={createFolder} />
             <Text className="text-4xl font-medium mb-4">Folders</Text>
             <Link asChild href={'/home'}>
@@ -78,16 +94,37 @@ export default function Landing() {
                         <View className="flex-row items-center justify-between">
                             <View className="flex-row items-center gap-3">
                                 <FolderIcon />
-                                <Text className="text-lg" >All Notes</Text>
+                                <Text className="text-base" >All Notes</Text>
                             </View>
-                            <View className="flex-row items-center gap-3">
-                                <Text className="text-[#9c9c9e] text-xl">{data.length}</Text>
+                            <View className="flex-row items-center gap-1">
+                                <Text className="text-[#9c9c9e]">{data.length}</Text>
                                 <ArrowRightIcon />
                             </View>
                         </View>
                     </View>
                 </Pressable>
             </Link>
+            <View className="bg-[#fff] ml-0 rounded-xl mt-8">
+                {folders.map((folder, index) => (
+                    <Link asChild href={`/${folder.id}`}
+                        key={index}
+                        style={{ borderBottomWidth: index === folders.length - 1 ? 0 : 1, borderBottomColor: '#ada7a169' }}
+                        className="w-full flex-row items-center justify-between p-5"
+                        >
+                        
+                        <Pressable className="">
+                            <View className="flex-row items-center gap-3">
+                                <FolderIcon />
+                                <Text className="text-base">{folder.name}</Text>
+                            </View>
+                            <View className="flex-row items-center gap-1">
+                                <Text className="text-[#9c9c9e]">{data.length}</Text>
+                                <ArrowRightIcon />
+                            </View>
+                        </Pressable>
+                    </Link>
+                ))}
+            </View>
             <MenuLanding openModal={setModalVisible} />
         </Screen>
     )
